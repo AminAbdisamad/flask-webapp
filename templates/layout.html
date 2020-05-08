@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hello Bulma!</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='main.css')}}" />
+  </head>
+  <body>
+    <section class="header">
+      <!-- Hero head: will stick at the top -->
+      <div class="head">
+        <header class="navbar">
+          <div class="container">
+            <div class="navbar-brand">
+              <a class="navbar-item">
+                <!-- <img
+                  src="https://bulma.io/images/bulma-type-white.png"
+                  alt="Logo"
+                /> -->
+                <h1>Flask App</h1>
+              </a>
+              <span class="navbar-burger burger" data-target="navbarMenuHeroC">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </div>
+            <div id="navbarMenuHeroC" class="navbar-menu">
+              <div class="navbar-end">
+                <a class="navbar-item is-active" href="{{ url_for('index')}}">
+                  Home
+                </a>
+                <a class="navbar-item" href="{{url_for('about')}}">
+                  About
+                </a>
+                <a class="navbar-item" href="{{url_for('register')}}">
+                  Register
+                </a>
+                <span class="navbar-item">
+                  <a
+                    class="button is-success is-inverted"
+                    href="{{url_for('login')}}"
+                  >
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Login</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
+    </section>
+    <div class="container">
+      {%block content%}
+      <!-- Will display content here-->
+      {%endblock content%}
+    </div>
+  </body>
+</html>

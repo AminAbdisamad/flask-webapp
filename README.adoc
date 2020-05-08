@@ -1,0 +1,9 @@
+=== Flask App
+== Required Installations
+
+[source,bash]
+----
+pipenv install flask
+pipenv install flask-wtf
+pipenv install email-validator
+----
