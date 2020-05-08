@@ -5,7 +5,7 @@ python:
 install:
   - pipenv install
 script:
-  - python app.py test
+  - travis_wait python app.py test
 
 notifications:
   - email:false

@@ -24,8 +24,8 @@
   <div class="field">
     <p class="control has-icons-left">
       {{login.password.label(class="label")}} 
-      {%if login.email.errors%}
-      {%for error in login.email.errors %}
+      {%if login.password.errors%}
+      {%for error in login.password.errors %}
       {{login.password(class="input is-danger")}}
      <div class="has-text-weight-light has-text-danger">
       {{error}}
