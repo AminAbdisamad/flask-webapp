@@ -56,7 +56,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     login = LoginForm()
-    if register.validate_on_submit():
+    if login.validate_on_submit():
         if login.email.data == "aminux@gmail.com" and login.password.data == "password":
             flash("Logged In successfully", "is-success")
             return redirect(url_for("index"))

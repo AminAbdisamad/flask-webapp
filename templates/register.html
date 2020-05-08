@@ -2,16 +2,6 @@
 <!-- Adds layout page to the top of this file -->
 {% block content %}
 <h1 class="title">Register Form</h1>
-<!-- Display notification -->
-{% with messages = get_flashed_messages (with_categories = true)%} {% if
-messsages %} {% for message in messages%}
-
-<div class="notification is-primary is-light">
-  <button class="delete"></button>
-  {{message}}
-</div>
-{%endfor%} {%endif%} {%endwith%}
-
 <form method="POST" action="">
   <!--Prevents against CRF attacks -->
   {{register.hidden_tag()}}
