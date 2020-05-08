@@ -47,7 +47,7 @@ def about():
 def register():
     register = RegistrationForm()
     if register.validate_on_submit():
-        flash(f"Account created for {register.username.data}", "success")
+        flash(f"Account created for {register.username.data}", "is-success")
         return redirect(url_for("index"))
     return render_template("register.html", title="Register Form", register=register)
 
@@ -56,6 +56,15 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     login = LoginForm()
+    if register.validate_on_submit():
+        if login.email.data == "aminux@gmail.com" and login.password.data == "password":
+            flash("Logged In successfully", "is-success")
+            return redirect(url_for("index"))
+        else:
+            flash(
+                "Loggin Unsuccessfull, please check your email and password",
+                "is-danger",
+            )
     return render_template("login.html", title="Login Form", login=login)
 
 
