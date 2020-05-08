@@ -1,3 +1,4 @@
+image:https://travis-ci.org/AminAbdisamad/flask-webapp.svg?branch=master["Build Status", link="https://travis-ci.org/AminAbdisamad/flask-webapp"]
 === Flask App
 == Required Installations
 
