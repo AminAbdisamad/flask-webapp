@@ -8,10 +8,15 @@ flask = "*"
 flask-wtf = "*"
 python-dotenv = "*"
 email-validator = "*"
+flask-sqlalchemy = "*"
+mysqlclient = "*"
+flask-bcrypt = "*"
+flask-login = "*"
 
 [dev-packages]
 pylint = "*"
 black = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.7"

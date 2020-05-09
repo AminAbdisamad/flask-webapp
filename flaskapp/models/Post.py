@@ -1,0 +1,13 @@
+from datetime import datetime
+from flaskapp import db
+
+
+class Post(db.Model):
+    _id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(40), nullable=True)
+    datePosted = db.Column(db.DateTime, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    userId = db.Column(db.Integer, db.ForeignKey("user._id"), nullable=False)
+
+    def __repr__(self):
+        return f"Post ('{self.title}, {self.datePosted} , {self.content}')"
