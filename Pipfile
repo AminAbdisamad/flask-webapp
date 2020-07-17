@@ -12,6 +12,8 @@ flask-sqlalchemy = "*"
 mysqlclient = "*"
 flask-bcrypt = "*"
 flask-login = "*"
+flask-migrate = "*"
+pillow = "*"
 
 [dev-packages]
 pylint = "*"

@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from flask_wtf.file import FileAllowed, FileField
+from flask_login import current_user
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, ValidationError
 from flaskapp.models.User import User
 
@@ -40,3 +42,34 @@ class LoginForm(FlaskForm):
 
 
 # Androma
+
+
+# Update AccountForm
+class UpdateAccountForm(FlaskForm):
+    username = StringField(
+        "Username", validators=[DataRequired(), Length(min=3, max=20)]
+    )
+    email = StringField("Email", validators=[DataRequired(), Email(), Length(min=5)])
+    name = StringField("Name")
+    location = StringField("Location")
+    bio = TextAreaField("Bio")
+    picture = FileField(
+        "Upload Profile Image", validators=[FileAllowed(["jpeg", "jpg", "png"])]
+    )
+
+    submit = SubmitField("Update Profile")
+
+    # Custome validation
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError("Username  waala haystaa fadlan midkale dooro")
+
+    # Custome validation
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError("Email waala haystaa fadlan midkale dooro")
+

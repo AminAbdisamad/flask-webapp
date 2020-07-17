@@ -1,5 +1,8 @@
+import os
+import secrets
+from PIL import Image
 from flask import render_template, redirect, url_for, flash, request
-from flaskapp.Forms import RegistrationForm, LoginForm
+from flaskapp.Forms import RegistrationForm, LoginForm, UpdateAccountForm
 from flaskapp.models.User import User
 from flaskapp.models.Post import Post
 from flaskapp import app, db, bcrypt
@@ -72,7 +75,7 @@ def login():
             # if we have params in the url we should redirect automatically
             nextPage = request.args.get("next")
             flash("Sucessfully Logged In", "is-success")
-            return redirect(nextPage) if nextPage else (url_for("index"))
+            return redirect(nextPage) if nextPage else redirect(url_for("index"))
         else:
             flash(
                 "Loggin Unsuccessfull, please check your email and password",
@@ -87,7 +90,56 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route("/account")
+# Save User Profile Picture
+def saveUserPicture(picture):
+    # We use hexa for profile picture name, if we use names there could be image with same filename
+    randomHex = secrets.token_hex(8)
+    # We explit filename and extension
+    _, fileExtension = os.path.splitext(picture.filename)
+    # concatinate hexa and file Extension something like [dfjdshf234.png]
+    pictureName = randomHex + fileExtension
+    picturePath = os.path.join(app.root_path, "static/profile_pictures", pictureName)
+    # Lets resize Image before Storing
+    imageSize = (125, 125)
+    image = Image.open(picture)
+    image.thumbnail(imageSize)
+    image.save(picturePath)
+    # picture.save(picturePath)
+    return pictureName
+
+
+# User Account
+@app.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
-    return render_template("account.html", title="User Account")
+    imageFilter = url_for(
+        "static", filename="profile_pictures/" + current_user.image_file
+    )
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            imageFile = saveUserPicture(form.picture.data)
+            current_user.image_file = imageFile
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        # Update Account with new information such as name,bio and location
+        user = User.query.filter_by(username=current_user.username).update(
+            dict(name=form.name.data, location=form.location.data, bio=form.bio.data)
+        )
+
+        db.session.commit()
+        flash("Your Account has been updated successfully", "is-success")
+        return redirect(url_for("account"))
+    elif request.method == "GET":
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.name.data = current_user.name
+        form.location.data = current_user.location
+        form.bio.data = current_user.bio
+    return render_template(
+        "account.html",
+        title="User Account",
+        userProfile=imageFilter,
+        form=form,
+        pictureName=form.picture.data,
+    )
