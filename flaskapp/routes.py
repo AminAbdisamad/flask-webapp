@@ -2,7 +2,7 @@ import os
 import secrets
 from PIL import Image
 from flask import render_template, redirect, url_for, flash, request
-from flaskapp.Forms import RegistrationForm, LoginForm, UpdateAccountForm
+from flaskapp.Forms import RegistrationForm, LoginForm, UpdateAccountForm, CreatePost
 from flaskapp.models.User import User
 from flaskapp.models.Post import Post
 from flaskapp import app, db, bcrypt
@@ -28,9 +28,18 @@ posts = [
 
 
 # Index Page
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html", posts=posts)
+    # entities = MyEntity.query.order_by(desc(MyEntity.time)).limit(3).all()
+    posts = Post.query.order_by(Post.datePosted.desc()).all()
+    form = CreatePost()
+    if form.validate_on_submit():
+        post = Post(content=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash("Post Created Successfully", "is-success")
+        return redirect(url_for("index"))
+    return render_template("index.html", form=form, posts=posts)
 
 
 # About Page
@@ -143,3 +152,4 @@ def account():
         form=form,
         pictureName=form.picture.data,
     )
+

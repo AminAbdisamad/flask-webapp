@@ -73,3 +73,11 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError("Email waala haystaa fadlan midkale dooro")
 
+
+class CreatePost(FlaskForm):
+    post = TextAreaField(
+        "Create Post",
+        validators=[DataRequired(), Length(min=5)],
+        render_kw={"placeholder": "Create Post"},
+    )
+    submit = SubmitField("Submit")
